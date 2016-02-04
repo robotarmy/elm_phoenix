@@ -1,0 +1,42 @@
+Elm.EntryPoint = Elm.EntryPoint || {};
+Elm.EntryPoint.make = function (_elm) {
+   "use strict";
+   _elm.EntryPoint = _elm.EntryPoint || {};
+   if (_elm.EntryPoint.values) return _elm.EntryPoint.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   var _op = {};
+   var update = F2(function (action,motor_list) {
+      var _p0 = action;
+      var updateMotor = function (motor) {    return _U.eq(motor.id,_p0._0.id) ? _U.update(motor,{running: $Basics.not(motor.running)}) : motor;};
+      return A2($List.map,updateMotor,motor_list);
+   });
+   var Toggle = function (a) {    return {ctor: "Toggle",_0: a};};
+   var modelItem = F2(function (address,motor) {
+      return A2($Html.li,
+      _U.list([$Html$Attributes.$class("motor"),A2($Html$Events.onClick,address,Toggle(motor))]),
+      _U.list([A2($Html.div,_U.list([$Html$Attributes.$class("factory")]),_U.list([$Html.text($Basics.toString(motor.factory))]))
+              ,A2($Html.div,_U.list([$Html$Attributes.$class("cc")]),_U.list([$Html.text($Basics.toString(motor.cc))]))
+              ,A2($Html.div,_U.list([$Html$Attributes.$class("cylinders")]),_U.list([$Html.text($Basics.toString(motor.cylinders))]))
+              ,A2($Html.div,_U.list([$Html$Attributes.$class("running")]),_U.list([$Html.text($Basics.toString(motor.running))]))]));
+   });
+   var view = F2(function (address,motor_list) {
+      return A2($Html.ul,_U.list([$Html$Attributes.$class("motors")]),A2($List.map,modelItem(address),motor_list));
+   });
+   var init = _U.list([{id: 1,cc: 250,cylinders: 1,factory: "Kawasaki",running: false}
+                      ,{id: 2,cc: 250,cylinders: 1,factory: "Yamaha",running: false}
+                      ,{id: 3,cc: 1340,cylinders: 2,factory: "Tom\'s Harley Shop",running: false}
+                      ,{id: 4,cc: 690,cylinders: 1,factory: "Husqvarna",running: false}]);
+   var Motor = F5(function (a,b,c,d,e) {    return {id: a,cc: b,cylinders: c,factory: d,running: e};});
+   var main = $StartApp$Simple.start({model: init,update: update,view: view});
+   return _elm.EntryPoint.values = {_op: _op,main: main,Motor: Motor,init: init,view: view,modelItem: modelItem,Toggle: Toggle,update: update};
+};
